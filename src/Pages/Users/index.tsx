@@ -1,17 +1,14 @@
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
-import { Content, Footer, Header } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
-import { createElement, FC, useState } from "react";
+import {  FC, useState } from "react";
+import {  Space, Table, TableProps, Tag, theme } from "antd";
 import MainLayout from "../../Layout/MainLayout";
 
-const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-    (icon, index) => ({
-        key: String(index + 1),
-        icon: createElement(icon),
-        label: `nav ${index + 1}`,
-    }),
-);
+
+interface DataType {
+    key: string;
+    name: string;
+    tags: string[];
+  }
+  
 
 
 const Users: FC = () => {
@@ -20,9 +17,66 @@ const Users: FC = () => {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken()
 
+
+      const columns: TableProps<DataType>['columns'] = [
+        {
+          title: "Ім'я",
+          dataIndex: 'name',
+          key: 'name',
+          render: (text: string) => <a>{text}</a>,
+        },
+        {
+          title: 'Tags',
+          key: 'tags',
+          dataIndex: 'tags',
+          render: (_:any, { tags }: any) => (
+            <>
+              {tags.map((tag: any) => {
+                let color = tag.length > 5 ? 'geekblue' : 'green';
+                if (tag === 'loser') {
+                  color = 'volcano';
+                }
+                return (
+                  <Tag color={color} key={tag}>
+                    {tag.toUpperCase()}
+                  </Tag>
+                );
+              })}
+            </>
+          ),
+        },
+        {
+          title: 'Action',
+          key: 'action',
+          render: (_: any, record: any) => (
+            <Space size="middle">
+              <a>Заблокувати</a>
+              <a>Видалити</a>
+            </Space>
+          ),
+        },
+      ];
+      
+      const data: DataType[] = [
+        {
+          key: '1',
+          name: 'John Brown',
+          tags: ['nice', 'developer'],
+        },
+        {
+          key: '2',
+          name: 'Jim Green',
+          tags: ['loser'],
+        },
+        {
+          key: '3',
+          name: 'Joe Black',
+          tags: ['cool', 'teacher'],
+        },
+      ]
     return <>
         <MainLayout>
-            <h1>Users</h1>
+            <Table<DataType>  columns={columns} dataSource={data}/>
         </MainLayout>
     </>
 
