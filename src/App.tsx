@@ -7,6 +7,8 @@ import Inventory from './Pages/Inventory';
 import Auth from './Pages/Auth';
 import { MsalProvider } from '@azure/msal-react';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 
 export const msalConfig = {
@@ -25,19 +27,19 @@ export const msalConfig = {
 export const msalInstance = new PublicClientApplication(msalConfig)
 function App() {
 
-
-
   return (
-    <MsalProvider instance={msalInstance}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/auth' element={<Auth />} />
-          <Route path='/' element={<Home />} />
-          <Route path='/users' element={<Users />} />
-          <Route path='/inventory' element={<Inventory />} />
-        </Routes>
-      </BrowserRouter>
-    </MsalProvider>
+    <Provider store={store}>
+      <MsalProvider instance={msalInstance}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/auth' element={<Auth />} />
+            <Route path='/' element={<Home />} />
+            <Route path='/users' element={<Users />} />
+            <Route path='/inventory' element={<Inventory />} />
+          </Routes>
+        </BrowserRouter>
+      </MsalProvider>
+    </Provider>
   );
 }
 
