@@ -1,9 +1,14 @@
 import { InteractionRequiredAuthError } from "@azure/msal-browser";
 import { useMsal } from "@azure/msal-react";
 import { FC } from "react";
+import { setAppToken } from "../../slices/auth";
+import { useAppDispatch } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 const Auth: FC = () => {
   const { instance, accounts} = useMsal();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -11,6 +16,9 @@ const Auth: FC = () => {
         scopes: ['api://018594b5-6694-45d6-8380-9c5f078d042f/u-invetory-test'], // Додайте потрібні дозволи
       });
       console.log("Login successful!", loginResponse);
+      dispatch(setAppToken(loginResponse.accessToken))
+      navigate('/inventory')
+
     } catch (error) {
       console.error("Login failed", error);
     }

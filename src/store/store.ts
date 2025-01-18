@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import rootReducer from "./reducers";
 import { user } from "../apis/user/user";
+import { persistStore } from 'redux-persist';
 
 
 export const store = configureStore({
@@ -13,6 +14,8 @@ export const store = configureStore({
       user.middleware,
     )
 });
+
+export const persistor = persistStore(store);
 
 setupListeners(store.dispatch);
 
