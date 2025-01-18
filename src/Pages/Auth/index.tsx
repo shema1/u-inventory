@@ -1,13 +1,14 @@
+import { InteractionRequiredAuthError } from "@azure/msal-browser";
 import { useMsal } from "@azure/msal-react";
 import { FC } from "react";
 
 const Auth: FC = () => {
-  const { instance } = useMsal();
+  const { instance, accounts} = useMsal();
 
   const handleLogin = async () => {
     try {
       const loginResponse = await instance.loginPopup({
-        scopes: ["User.Read"], // Додайте потрібні дозволи
+        scopes: ['api://018594b5-6694-45d6-8380-9c5f078d042f/u-invetory-test'], // Додайте потрібні дозволи
       });
       console.log("Login successful!", loginResponse);
     } catch (error) {
@@ -15,7 +16,31 @@ const Auth: FC = () => {
     }
   };
 
-  return <button onClick={handleLogin}>Login with Microsoft</button>;
+  const getToken = async (msalInstance:any, accounts: any) => {
+    try {
+      const response = await msalInstance.acquireTokenSilent({
+        scopes: ['api://018594b5-6694-45d6-8380-9c5f078d042f/u-invetory-test'], // Дозволи, потрібні для токена
+        account: accounts[0],  // Перший обліковий запис із кешу (поточний користувач)
+      });
+  
+      console.log("Access Token:", response.accessToken);
+      return response.accessToken; // Повертає токен
+    } catch (error) {
+      if (error instanceof InteractionRequiredAuthError) {
+        // Якщо неможливо отримати токен без взаємодії
+        console.error("Token acquisition requires user interaction:", error);
+      } else {
+        console.error("Error acquiring token silently:", error);
+      }
+    }
+  };
+  
+
+  return <>
+  <button onClick={handleLogin}>Login with Microsoft</button>
+  <button onClick={() => getToken(instance,accounts)}>test</button>
+
+  </>;
 }
 
 export default Auth;
