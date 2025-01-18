@@ -4,6 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import rootReducer from "./reducers";
 import { user } from "../apis/user/user";
 import { persistStore } from 'redux-persist';
+import { items } from "../apis/items/user";
 
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(
       user.middleware,
+      items.middleware
     )
 });
 
