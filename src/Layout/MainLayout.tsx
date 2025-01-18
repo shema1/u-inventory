@@ -9,6 +9,8 @@ import {
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../store/hooks';
+import { setAppToken, setAuthorizedStatus } from '../slices/auth';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -43,10 +45,18 @@ interface MainLayoutProps {
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
+      const dispatch = useAppDispatch();
+
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+    const logout = () => {
+        dispatch(setAppToken(''));
+        dispatch(setAuthorizedStatus('logout'))
+
+    }
 
     return <>
         <Layout style={{ minHeight: '100vh' }}>
@@ -62,7 +72,9 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 </Menu>
             </Sider>
             <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer }} />
+                <Header style={{ padding: 0, background: colorBgContainer }} >
+                    <button onClick={logout}>test</button>
+                </Header>
                 <Content style={{ margin: '16px' }}>
                     <div
                         style={{

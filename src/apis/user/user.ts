@@ -12,8 +12,14 @@ export const user = createApi({
                 url: '/user',
                 method: 'GET'
             })
+        }),
+        checkUser: builder.query<IUser[], void>({
+            query: () => ({
+                url: '/user/checkUser',
+                method: 'GET'
+            })
         })
     })
 })
 
-export const { useLazyGetUsersQuery } = user
+export const { useLazyGetUsersQuery, useLazyCheckUserQuery } = user

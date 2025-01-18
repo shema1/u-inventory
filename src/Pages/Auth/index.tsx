@@ -1,14 +1,17 @@
 import { InteractionRequiredAuthError } from "@azure/msal-browser";
 import { useMsal } from "@azure/msal-react";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { setAppToken } from "../../slices/auth";
 import { useAppDispatch } from "../../store/store";
 import { useNavigate } from "react-router-dom";
+import { useLazyCheckUserQuery } from "../../apis/user/user";
 
 const Auth: FC = () => {
-  const { instance, accounts} = useMsal();
+  const { instance, accounts } = useMsal();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [checkUser, { data }] = useLazyCheckUserQuery();
+
 
   const handleLogin = async () => {
     try {
@@ -17,20 +20,22 @@ const Auth: FC = () => {
       });
       console.log("Login successful!", loginResponse);
       dispatch(setAppToken(loginResponse.accessToken))
+      await checkUser();
       navigate('/inventory')
+
 
     } catch (error) {
       console.error("Login failed", error);
     }
   };
 
-  const getToken = async (msalInstance:any, accounts: any) => {
+  const getToken = async (msalInstance: any, accounts: any) => {
     try {
       const response = await msalInstance.acquireTokenSilent({
         scopes: ['api://018594b5-6694-45d6-8380-9c5f078d042f/u-invetory-test'], // Дозволи, потрібні для токена
         account: accounts[0],  // Перший обліковий запис із кешу (поточний користувач)
       });
-  
+
       console.log("Access Token:", response.accessToken);
       return response.accessToken; // Повертає токен
     } catch (error) {
@@ -42,11 +47,11 @@ const Auth: FC = () => {
       }
     }
   };
-  
+
 
   return <>
-  <button onClick={handleLogin}>Login with Microsoft</button>
-  <button onClick={() => getToken(instance,accounts)}>test</button>
+    <button onClick={handleLogin}>Login with Microsoft</button>
+    <button onClick={() => getToken(instance, accounts)}>test</button>
 
   </>;
 }
