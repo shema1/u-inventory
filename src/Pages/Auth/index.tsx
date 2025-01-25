@@ -1,16 +1,17 @@
 import { InteractionRequiredAuthError } from "@azure/msal-browser";
 import { useMsal } from "@azure/msal-react";
 import { FC, useEffect } from "react";
-import { setAppToken } from "../../slices/auth";
+import { setAppToken, setUserInfo } from "../../slices/auth";
 import { useAppDispatch } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { useLazyCheckUserQuery } from "../../apis/user/user";
+import { IUser } from "../../apis/user/interfaces";
 
 const Auth: FC = () => {
   const { instance, accounts } = useMsal();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [checkUser, { data }] = useLazyCheckUserQuery();
+  const [checkUser] = useLazyCheckUserQuery();
 
 
   const handleLogin = async () => {
@@ -20,9 +21,12 @@ const Auth: FC = () => {
       });
       console.log("Login successful!", loginResponse);
       dispatch(setAppToken(loginResponse.accessToken))
-      await checkUser();
-      navigate('/inventory')
 
+      checkUser().then((res) => {
+        console.log("res.data", res.data)
+        res.data && dispatch(setUserInfo(res.data as IUser))
+        navigate('/inventory')
+      });
 
     } catch (error) {
       console.error("Login failed", error);

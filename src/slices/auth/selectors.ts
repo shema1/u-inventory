@@ -7,3 +7,8 @@ export const useAppToken = () => useAppSelector(
 
 export const useAuthorizedStatus = () => useAppSelector(
   (state) => state.authActions.isAuthorized)
+
+
+export const useProfileInfo = () => useAppSelector(
+    (state) => state.authActions.userInfo)
+  

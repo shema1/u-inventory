@@ -2,15 +2,18 @@ import React, { FC, useState } from 'react';
 import {
     DesktopOutlined,
     FileOutlined,
+    LogoutOutlined,
     PieChartOutlined,
     TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Layout, Menu, theme } from 'antd';
+import { Button, Layout, Menu, theme } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
 import { setAppToken, setAuthorizedStatus } from '../slices/auth';
+import { useProfileInfo } from '../slices/auth/selectors';
+import { useMsal } from "@azure/msal-react";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -45,7 +48,9 @@ interface MainLayoutProps {
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
-      const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
+    const { instance } = useMsal();
+    const profileInfo = useProfileInfo();
 
     const [collapsed, setCollapsed] = useState(false);
     const {
@@ -55,7 +60,6 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     const logout = () => {
         dispatch(setAppToken(''));
         dispatch(setAuthorizedStatus('logout'))
-
     }
 
     return <>
@@ -63,7 +67,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                 <div className="demo-logo-vertical" />
                 <Menu theme="dark" selectedKeys={[location.pathname]} mode="inline" >
-                    <Menu.Item key={'/users'}  icon={<UserOutlined />} onClick={() => navigate('/users')}>
+                    <Menu.Item key={'/users'} icon={<UserOutlined />} onClick={() => navigate('/users')}>
                         Користувачі
                     </Menu.Item>
                     <Menu.Item key={'/inventory'} icon={<FileOutlined />} onClick={() => navigate('/inventory')}>
@@ -72,8 +76,11 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 </Menu>
             </Sider>
             <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer }} >
-                    <button onClick={logout}>test</button>
+                <Header style={{ padding: '12px 25px', background: colorBgContainer, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} >
+                    <div style={{ marginRight: 20 }}>{profileInfo?.firstName + " " + profileInfo?.lastName}</div>
+                    <Button onClick={logout} type="primary" icon={<LogoutOutlined />} iconPosition='end'>
+                        Вийти
+                    </Button>
                 </Header>
                 <Content style={{ margin: '16px' }}>
                     <div

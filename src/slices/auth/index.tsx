@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthorizedType } from "./authInterface";
+import { IUser } from "../../apis/user/interfaces";
 
 interface AuthActionsState {
   token: string | null;
-  isAuthorized: AuthorizedType
+  isAuthorized: AuthorizedType;
+  userInfo: IUser | null
 }
 
 export const initialState: AuthActionsState = {
   token: null,
   isAuthorized: 'logout',
+  userInfo: null
 };
 
 export const authActionsSlice = createSlice({
@@ -23,8 +26,12 @@ export const authActionsSlice = createSlice({
       ...state,
       isAuthorized: action.payload,
     }),
+    setUserInfo: (state, action: PayloadAction<IUser>) => ({
+      ...state,
+      userInfo: action.payload,
+    }),
   },
 });
 
 export default authActionsSlice.reducer;
-export const { setAppToken, setAuthorizedStatus } = authActionsSlice.actions;
+export const { setAppToken, setAuthorizedStatus, setUserInfo } = authActionsSlice.actions;

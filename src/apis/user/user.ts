@@ -13,7 +13,7 @@ export const user = createApi({
                 method: 'GET'
             })
         }),
-        checkUser: builder.query<IUser[], void>({
+        checkUser: builder.query<IUser, void>({
             query: () => ({
                 url: '/user/checkUser',
                 method: 'GET'
