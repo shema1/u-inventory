@@ -19,6 +19,7 @@ const Auth: FC = () => {
     try {
       const loginResponse = await instance.loginPopup({
         scopes: ['api://018594b5-6694-45d6-8380-9c5f078d042f/u-invetory-test'], // Додайте потрібні дозволи
+        prompt: "select_account"
       });
       console.log("Login successful!", loginResponse);
       dispatch(setAppToken(loginResponse.accessToken))
