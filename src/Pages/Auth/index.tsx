@@ -6,7 +6,8 @@ import { useAppDispatch } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { useLazyCheckUserQuery } from "../../apis/user/user";
 import { IUser } from "../../apis/user/interfaces";
-
+import { Button, Image } from "antd";
+import micorsoftLogo from "../../assets/micorsoft.png";
 const Auth: FC = () => {
   const { instance, accounts } = useMsal();
   const dispatch = useAppDispatch();
@@ -54,8 +55,28 @@ const Auth: FC = () => {
 
 
   return <>
-    <button onClick={handleLogin}>Login with Microsoft</button>
-    <button onClick={() => getToken(instance, accounts)}>test</button>
+    {/* <button onClick={handleLogin}>Login with Microsoft</button>
+    <button onClick={() => getToken(instance, accounts)}>test</button> */}
+
+    <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center', }}>
+
+      <div style={{
+        width: 350,
+        height: 300,
+        background: '#d5d5e4',
+        borderRadius: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        boxSizing: 'border-box',
+        padding: 22,
+        alignItems: 'center'
+      }}>
+        <Image src={micorsoftLogo} width={80} />
+        <div style={{marginTop: 20, marginBottom: 50, textAlign: 'center'}}>Увійдіть у свій обліковий запис з допомогою Micorsoft</div>
+        <Button onClick={handleLogin} type='primary' style={{fontWeight: 'bold'}}>Login with Microsoft</Button>
+      </div>
+
+    </div>
 
   </>;
 }
