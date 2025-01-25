@@ -7,6 +7,7 @@ import Inventory from "./Pages/Inventory";
 import Home from "./Pages/Home";
 import { setAuthorizedStatus } from "./slices/auth";
 import { useAppDispatch } from "./store/hooks";
+import IvitedUsers from "./Pages/IvitedUsers";
 
 
 
@@ -46,6 +47,8 @@ const AppRoutes: FC = () => {
         return (
             <Routes>
                 <Route path='/users' element={<Users />} />
+                <Route path='/invitedusers' element={<IvitedUsers />} />
+
                 <Route path='/inventory' element={<Inventory />} />
                 <Route path='*' element={<Inventory />} />
             </Routes>

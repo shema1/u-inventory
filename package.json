@@ -16,6 +16,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "antd": "^5.23.1",
+    "date-fns": "^4.1.0",
     "git": "^0.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

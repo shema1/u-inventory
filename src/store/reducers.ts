@@ -3,6 +3,7 @@ import { user } from "../apis/user/user";
 import { authActionsSlice } from "../slices/auth";
 import { persistReducer } from "redux-persist";
 import { items } from "../apis/items/user";
+import { inviteUser } from "../apis/inviteUser/inviteUser";
 
 
 
@@ -14,6 +15,8 @@ const persistConfig = {
 const rootReducer = {
   [user.reducerPath]: user.reducer,
   [items.reducerPath]: items.reducer,
+  [inviteUser.reducerPath]: inviteUser.reducer,
+
 
   [authActionsSlice.name]: persistReducer(persistConfig, authActionsSlice.reducer)
 

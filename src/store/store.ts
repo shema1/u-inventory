@@ -5,6 +5,7 @@ import rootReducer from "./reducers";
 import { user } from "../apis/user/user";
 import { persistStore } from 'redux-persist';
 import { items } from "../apis/items/user";
+import { inviteUser } from "../apis/inviteUser/inviteUser";
 
 
 export const store = configureStore({
@@ -13,7 +14,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware()
     .concat(
       user.middleware,
-      items.middleware
+      items.middleware,
+      inviteUser.middleware
     )
 });
 
