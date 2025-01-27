@@ -1,21 +1,22 @@
 import { FC, useEffect, useState } from "react";
 import { Button, Space, Table, TableProps } from "antd";
 import MainLayout from "../../Layout/MainLayout";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 import InviteUserModal from "./components/InviteUserModal";
-import { useDeleteInviteMutation, useLazyGetInvitedUsersQuery } from "../../apis/inviteUser/inviteUser";
 import { blue, red } from '@ant-design/colors';
-import { IUserInvite } from "../../apis/inviteUser/interfaces";
 import DeleteButton from "../../components/core/DeleteButton";
 import { format } from "date-fns";
+import { useDeleteUserMutation, useLazyGetUsersByStatusQuery } from "../../apis/user/user";
+import { IUser } from "../../apis/user/interfaces";
 
 const IvitedUsers: FC = () => {
 
     
-    const [getInvitedUsers, { data: invitedUsers, isLoading: invitedUsersIsLoading }] = useLazyGetInvitedUsersQuery();
-    const [deleteInvite, { isLoading: deleteInviteLoading }] = useDeleteInviteMutation();
+    const [getInvitedUsers, { data: invitedUsers, isLoading: invitedUsersIsLoading }]  = useLazyGetUsersByStatusQuery()
+    // const [getInvitedUsers, { data: invitedUsers, isLoading: invitedUsersIsLoading }] = useLazyGetInvitedUsersQuery();
+    const [deleteInvite, { isLoading: deleteInviteLoading }] = useDeleteUserMutation();
 
-    const [selectedUser, setSelectedUser] = useState<IUserInvite | null>(null);
+    const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
     const [inviteUserModalIsOpen, setInviteUserModalIsOpen] = useState<boolean>(false);
 
     const tableLoading = invitedUsersIsLoading || deleteInviteLoading;
@@ -24,13 +25,13 @@ const IvitedUsers: FC = () => {
         deleteInvite(id)
     }
 
-    const onSelectUser = (user: IUserInvite) => {
+    const onSelectUser = (user: IUser) => {
         setSelectedUser(user);
         setInviteUserModalIsOpen(true);
     }
 
     useEffect(() => {
-        getInvitedUsers();
+        getInvitedUsers({status: 'invited'});
     }, [])
 
     useEffect(() => {
@@ -39,12 +40,12 @@ const IvitedUsers: FC = () => {
         }
     },[inviteUserModalIsOpen])
 
-    const columns: TableProps<IUserInvite>['columns'] = [
+    const columns: TableProps<IUser>['columns'] = [
         {
             title: "Ім'я",
             dataIndex: 'firstName',
             key: 'fullName',
-            render: (text: string, userData: IUserInvite) => userData.lastName + " " + userData.firstName
+            render: (text: string, userData: IUser) => userData.lastName + " " + userData.firstName
         },
         {
             title: "Емейл",
@@ -62,7 +63,7 @@ const IvitedUsers: FC = () => {
             title: 'Дії',
             key: 'action',
             width: 150,
-            render: (_: any, record: IUserInvite) => (
+            render: (_: any, record: IUser) => (
                 <Space size="middle">
                     <Button
                         type='text'
@@ -90,7 +91,7 @@ const IvitedUsers: FC = () => {
             }}>
                 <Button type='primary' icon={<PlusOutlined />} onClick={() => setInviteUserModalIsOpen(true)}>Додати користувача</Button>
             </div>
-            <Table<IUserInvite> columns={columns} dataSource={invitedUsers} loading={tableLoading} />
+            <Table<IUser> columns={columns} dataSource={invitedUsers} loading={tableLoading} />
         </MainLayout>
         <InviteUserModal
             open={inviteUserModalIsOpen}

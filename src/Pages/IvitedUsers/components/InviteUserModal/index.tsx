@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Form, FormProps, Input, Modal, ModalProps } from "antd";
 import { FC, useEffect } from "react";
-import { useCreateInviteMutation, useUpdateInviteMutation } from "../../../../apis/inviteUser/inviteUser";
 import { IUserInvite } from "../../../../apis/inviteUser/interfaces";
+import { IUser } from "../../../../apis/user/interfaces";
+import { useCreateInviteMutation, useUpdateUserMutation } from "../../../../apis/user/user";
 
 interface InviteUserModalProps extends ModalProps {
     open: boolean;
     onCancel: () => void;
-    selectedUser: IUserInvite | null
+    selectedUser: IUser | null
 
 }
 
@@ -16,7 +17,7 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
     const [form] = Form.useForm();
     const [createUser, { isLoading: isLoadingCreateInvite, isSuccess: isSuccessInviteUser }] = useCreateInviteMutation();
 
-    const [updateUserInvite, { isLoading: isLoadingUserInviteUpdate, isSuccess: isSuccessUserInviteUpdate }] = useUpdateInviteMutation();
+    const [updateUserInvite, { isLoading: isLoadingUserInviteUpdate, isSuccess: isSuccessUserInviteUpdate }] = useUpdateUserMutation();
 
     const formLoading = isLoadingCreateInvite || isLoadingUserInviteUpdate
 
@@ -78,7 +79,7 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
             open={open}
             onCancel={onClose}
             onOk={selectedUser ? onUpdateUserInvite : onCreateUser}
-            loading={isLoadingCreateInvite}
+            loading={formLoading}
         >
             <Form
                 form={form}
