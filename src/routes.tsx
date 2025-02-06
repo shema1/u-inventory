@@ -8,6 +8,8 @@ import Home from "./Pages/Home";
 import { setAuthorizedStatus } from "./slices/auth";
 import { useAppDispatch } from "./store/hooks";
 import IvitedUsers from "./Pages/IvitedUsers";
+import Login from "./Pages/Login";
+import SignUp from "./Pages/SignUp";
 
 
 
@@ -16,20 +18,20 @@ const AppRoutes: FC = () => {
 
     const authType = useAuthorizedStatus();
     const token = useAppToken();
-  const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         console.log("woork", token)
         if (token && authType === 'logout') {
-        console.log("woork1")
-        dispatch(setAuthorizedStatus('success'))
+            console.log("woork1")
+            dispatch(setAuthorizedStatus('success'))
         }
     }, [token, authType])
 
 
     useEffect(() => {
         console.log("authType", authType)
-    },[authType])
+    }, [authType])
 
     if (authType === 'logout') {
         console.log("logout")
@@ -37,7 +39,10 @@ const AppRoutes: FC = () => {
             <Routes>
 
                 <Route path='/auth' element={<Auth />} />
-                <Route path='*' element={<Auth />} />
+                {/* <Route path='*' element={<Auth />} /> */}
+                <Route path='/login' element={<Login />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='*' element={<Login />} />
             </Routes>
         )
     }

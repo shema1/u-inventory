@@ -6,6 +6,7 @@ import { user } from "../apis/user/user";
 import { persistStore } from 'redux-persist';
 import { items } from "../apis/items/user";
 import { inviteUser } from "../apis/inviteUser/inviteUser";
+import { auth } from "../apis/auth/auth";
 
 
 export const store = configureStore({
@@ -15,7 +16,8 @@ export const store = configureStore({
     .concat(
       user.middleware,
       items.middleware,
-      inviteUser.middleware
+      inviteUser.middleware,
+      auth.middleware
     )
 });
 
