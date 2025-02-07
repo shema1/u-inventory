@@ -14,38 +14,29 @@ interface InviteUserModalProps extends ModalProps {
 
 const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUser }) => {
 
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<IUserInvite>();
     const [createUser, { isLoading: isLoadingCreateInvite, isSuccess: isSuccessInviteUser }] = useCreateInviteMutation();
 
     const [updateUserInvite, { isLoading: isLoadingUserInviteUpdate, isSuccess: isSuccessUserInviteUpdate }] = useUpdateUserMutation();
 
     const formLoading = isLoadingCreateInvite || isLoadingUserInviteUpdate
 
-    const onFinish: FormProps<IUserInvite>['onFinish'] = (values) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed: FormProps<IUserInvite>['onFinishFailed'] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-
     const onCreateUser = async () => {
         try {
             const values = await form.validateFields();
-            createUser(values);
+            await createUser(values).unwrap();
         } catch (error) {
-            console.log("Помилка при валідації форми:", error);
+            console.error("Помилка при створенні користувача:", error);
         }
     }
 
     const onUpdateUserInvite = async () => {
         try {
             const values = await form.validateFields();
-            updateUserInvite({id: selectedUser?.id, ...values})
+            const { createdAt, ...userData } = values;
+            await updateUserInvite({id: selectedUser?.id, ...userData}).unwrap();
         } catch (error) {
-            console.log("Помилка при валідації форми:", error);
-
+            console.error("Помилка при оновленні користувача:", error);
         }
     }
 
@@ -79,15 +70,13 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
             open={open}
             onCancel={onClose}
             onOk={selectedUser ? onUpdateUserInvite : onCreateUser}
-            loading={formLoading}
+            confirmLoading={formLoading}
         >
             <Form
                 form={form}
                 name="basic"
                 layout='horizontal'
                 labelCol={{ span: 4 }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 autoComplete="off"
                 style={{ marginTop: 26 }}
             >
@@ -100,7 +89,7 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
                     <Input />
                 </Form.Item>
                 <Form.Item<IUserInvite>
-                    label="Прізвише"
+                    label="Прізвище"
                     name='lastName'
                 >
                     <Input />

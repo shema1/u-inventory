@@ -5,6 +5,7 @@ import { persistReducer } from "redux-persist";
 import { items } from "../apis/items/user";
 import { inviteUser } from "../apis/inviteUser/inviteUser";
 import { auth } from "../apis/auth/auth";
+import { roles } from "../apis/roles/roles";
 
 
 
@@ -16,6 +17,8 @@ const persistConfig = {
 const rootReducer = {
   [user.reducerPath]: user.reducer,
   [items.reducerPath]: items.reducer,
+  [roles.reducerPath]: roles.reducer,
+
   [inviteUser.reducerPath]: inviteUser.reducer,
   [auth.reducerPath]: auth.reducer,
 

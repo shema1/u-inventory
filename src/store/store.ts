@@ -7,6 +7,7 @@ import { persistStore } from 'redux-persist';
 import { items } from "../apis/items/user";
 import { inviteUser } from "../apis/inviteUser/inviteUser";
 import { auth } from "../apis/auth/auth";
+import { roles } from "../apis/roles/roles";
 
 
 export const store = configureStore({
@@ -17,7 +18,8 @@ export const store = configureStore({
       user.middleware,
       items.middleware,
       inviteUser.middleware,
-      auth.middleware
+      auth.middleware,
+      roles.middleware
     )
 });
 

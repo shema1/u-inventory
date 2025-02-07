@@ -5,7 +5,7 @@ export interface IUser {
     email: string;
     password: string;
     status: IUserStatus;
-    createdAt: Date;
+    createdAt: string;
     invitedAt: Date | null;
   }
 
