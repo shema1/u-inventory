@@ -1,19 +1,15 @@
 import React, { FC, useState } from 'react';
 import {
-    DesktopOutlined,
     FileOutlined,
     LogoutOutlined,
-    PieChartOutlined,
-    TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Layout, Menu, theme } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
-import { setAppToken, setAuthorizedStatus } from '../slices/auth';
 import { useProfileInfo } from '../slices/auth/selectors';
-import { useMsal } from "@azure/msal-react";
+import { clearData } from '../slices/auth';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -57,8 +53,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     } = theme.useToken();
 
     const logout = () => {
-        dispatch(setAppToken(''));
-        dispatch(setAuthorizedStatus(null))
+        dispatch(clearData());
     }
 
     return <>

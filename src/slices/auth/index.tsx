@@ -19,18 +19,6 @@ export const authActionsSlice = createSlice({
   initialState,
   name: "authActions",
   reducers: {
-    setAppToken: (state, action: PayloadAction<string>) => ({
-      ...state,
-      token: action.payload,
-    }),
-    setAuthorizedStatus: (state, action: PayloadAction<AuthorizedType>) => ({
-      ...state,
-      isAuthorized: action.payload,
-    }),
-    setUserInfo: (state, action: PayloadAction<IUser>) => ({
-      ...state,
-      userInfo: action.payload,
-    }),
     clearData: (state) => ({
       ...state,
       token: null,
@@ -47,4 +35,4 @@ export const authActionsSlice = createSlice({
 });
 
 export default authActionsSlice.reducer;
-export const { setAppToken, setAuthorizedStatus, setUserInfo, clearData, setDataAfterLogin } = authActionsSlice.actions;
+export const { clearData, setDataAfterLogin } = authActionsSlice.actions;

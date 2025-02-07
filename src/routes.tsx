@@ -1,12 +1,8 @@
-import { FC, useEffect } from "react";
-import { useAppToken, useAuthorizedStatus } from "./slices/auth/selectors";
+import { FC } from "react";
+import { useAuthorizedStatus } from "./slices/auth/selectors";
 import { Route, Routes } from "react-router-dom";
-import Auth from "./Pages/Auth";
 import Users from "./Pages/Users";
 import Inventory from "./Pages/Inventory";
-import Home from "./Pages/Home";
-import { setAuthorizedStatus } from "./slices/auth";
-import { useAppDispatch } from "./store/hooks";
 import IvitedUsers from "./Pages/IvitedUsers";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
@@ -17,8 +13,6 @@ import SignUp from "./Pages/SignUp";
 const AppRoutes: FC = () => {
 
     const authType = useAuthorizedStatus();
-    const token = useAppToken();
-    const dispatch = useAppDispatch();
 
     console.log("authType", authType)
 
@@ -40,7 +34,6 @@ const AppRoutes: FC = () => {
         return (
             <Routes>
 
-                <Route path='/auth' element={<Auth />} />
                 {/* <Route path='*' element={<Auth />} /> */}
                 <Route path='/login' element={<Login />} />
                 <Route path='/signup' element={<SignUp />} />
