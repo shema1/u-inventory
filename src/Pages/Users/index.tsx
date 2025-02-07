@@ -1,17 +1,17 @@
 import { FC, useEffect } from "react";
 import { Table, TableProps } from "antd";
 import MainLayout from "../../Layout/MainLayout";
-import { useLazyGetUsersQuery } from "../../apis/user/user";
+import { useLazyGetUsersByStatusQuery } from "../../apis/user/user";
 import { IUser } from "../../apis/user/interfaces";
 
 
 
 const Users: FC = () => {
 
-    const [getUsers, { data: usersData, isLoading }] = useLazyGetUsersQuery()
+    const [getUsersByStatus, { data: usersData, isLoading }] = useLazyGetUsersByStatusQuery()
 
     useEffect(() => {
-        getUsers();
+        getUsersByStatus({ status: 'active' });
     }, [])
 
     useEffect(() => {

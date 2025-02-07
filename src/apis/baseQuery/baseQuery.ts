@@ -8,7 +8,7 @@ const getBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extraOp
 
         const state = api.getState() as RootState;
         const accessToken = state.authActions.token
-
+        console.log("accessToken", accessToken)
         const result = await fetchBaseQuery({
             baseUrl: 'http://localhost:4000',
             prepareHeaders: (headers) => {
