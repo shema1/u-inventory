@@ -1,2 +1,2 @@
 
-export type AuthorizedType =  "success" | "delete" | "block" | "logout"
+export type AuthorizedType =  'active' | 'invited' | 'pending' | 'banned' | null

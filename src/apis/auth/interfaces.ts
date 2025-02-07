@@ -1,3 +1,5 @@
+import { IUser } from "../user/interfaces";
+
 export interface IUserLogin {
     email: string;
     password: string;
@@ -10,4 +12,10 @@ export interface IUserSignUp {
     confirmPassword: string;
     firstName: string;
     lasName: string;
+}
+
+
+export interface IUserLoginResponse {
+    token: string;
+    userInfo: IUser;
 }

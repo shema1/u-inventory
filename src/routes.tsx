@@ -20,20 +20,22 @@ const AppRoutes: FC = () => {
     const token = useAppToken();
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        console.log("woork", token)
-        if (token && authType === 'logout') {
-            console.log("woork1")
-            dispatch(setAuthorizedStatus('success'))
-        }
-    }, [token, authType])
+    console.log("authType", authType)
+
+    // useEffect(() => {
+    //     console.log("woork", token)
+    //     if (token && authType === 'logout') {
+    //         console.log("woork1")
+    //         dispatch(setAuthorizedStatus('success'))
+    //     }
+    // }, [token, authType])
 
 
-    useEffect(() => {
-        console.log("authType", authType)
-    }, [authType])
+    // useEffect(() => {
+    //     console.log("authType", authType)
+    // }, [authType])
 
-    if (authType === 'logout') {
+    if (authType === null) {
         console.log("logout")
         return (
             <Routes>
@@ -46,7 +48,7 @@ const AppRoutes: FC = () => {
             </Routes>
         )
     }
-    if (authType === 'success') {
+    if (authType === 'active') {
         console.log("success")
 
         return (

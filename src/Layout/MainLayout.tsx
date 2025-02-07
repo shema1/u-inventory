@@ -49,7 +49,6 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useAppDispatch();
-    const { instance } = useMsal();
     const profileInfo = useProfileInfo();
 
     const [collapsed, setCollapsed] = useState(false);
@@ -59,7 +58,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
 
     const logout = () => {
         dispatch(setAppToken(''));
-        dispatch(setAuthorizedStatus('logout'))
+        dispatch(setAuthorizedStatus(null))
     }
 
     return <>

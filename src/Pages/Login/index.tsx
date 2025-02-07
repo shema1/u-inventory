@@ -1,21 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import { FC, useEffect } from "react";
 import { IUserLogin } from "../../apis/auth/interfaces";
 import { useLoginMutation } from "../../apis/auth/auth";
 import { passswordMinLengthdRule, requireFielddRule, validEmaildRule } from "../../services/formRules";
-
-
+import { useAppDispatch } from "../../store/hooks";
+import { setDataAfterLogin } from "../../slices/auth";
 
 
 const Login: FC = () => {
-
+    const dispatch = useAppDispatch()
     const [login, {data: loginData, isLoading: loginIsLoading}] = useLoginMutation()
-    const onLogin = () => {
-        console.log("work")
-    }
+
+
     const onFinish = (values: IUserLogin) => {
-        console.log("Success:", values);
         login(values)
     };
 
@@ -24,13 +23,15 @@ const Login: FC = () => {
     };
 
     useEffect(() => {
-        console.log("loginData", loginData)
+        if(loginData){
+            dispatch(setDataAfterLogin(loginData))
+        }
     },[loginData])
 
     return <>
     <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center', }}>
             <div style={{
-                width: 350,
+                width: 400,
                 height: 350,
                 background: '#d5d5e4',
                 borderRadius: 10,
@@ -40,7 +41,7 @@ const Login: FC = () => {
                 padding: 22,
                 alignItems: 'center'
             }}>
-                <div className="p-6 bg-white rounded-2xl shadow-lg w-96">
+                <div className="p-6 bg-white rounded-2xl shadow-lg w-[300px]">
                     <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
                     <Form
                         name="login"
@@ -81,6 +82,7 @@ const Login: FC = () => {
                                 htmlType="submit"
                                 className="w-full"
                                 size="large"
+                                loading={loginIsLoading}
                             >
                                 Log in
                             </Button>
