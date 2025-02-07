@@ -6,6 +6,7 @@ import Inventory from "./Pages/Inventory";
 import IvitedUsers from "./Pages/IvitedUsers";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
+import Roles from "./Pages/Roles";
 
 
 
@@ -47,6 +48,8 @@ const AppRoutes: FC = () => {
         return (
             <Routes>
                 <Route path='/users' element={<Users />} />
+                <Route path='/roles' element={<Roles />} />
+
                 <Route path='/invitedusers' element={<IvitedUsers />} />
 
                 <Route path='/inventory' element={<Inventory />} />

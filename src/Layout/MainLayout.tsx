@@ -70,6 +70,9 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                     <Menu.Item key={'/inventory'} icon={<FileOutlined />} onClick={() => navigate('/inventory')}>
                         Інвентар
                     </Menu.Item>
+                    <Menu.Item key={'/roles'} icon={<UserOutlined />} onClick={() => navigate('/roles')}>
+                        Ролі
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout>
