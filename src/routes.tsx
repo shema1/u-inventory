@@ -9,6 +9,7 @@ import SignUp from "./Pages/SignUp";
 import Roles from "./Pages/Roles";
 import UserPendingPage from "./Pages/UserPendingPage";
 import UserBannedPage from "./Pages/UserBannedPage";
+import PendingUsers from "./Pages/PendingUsers";
 
 
 
@@ -56,6 +57,7 @@ const AppRoutes: FC = () => {
 
                 <Route path='/inventory' element={<Inventory />} />
                 <Route path='*' element={<Inventory />} />
+                <Route path='/pending-users' element={<PendingUsers />} />
             </Routes>
 
         )
