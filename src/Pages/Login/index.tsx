@@ -59,7 +59,7 @@ const Login: FC = () => {
             }}>
                 <Title level={2} style={{ textAlign: 'center', marginBottom: 30, color: '#1a237e' }}>
                     Вхід в систему
-                    {process.env.REACT_APP_BASE_URL}
+                    test:{process.env.REACT_APP_BASE_URL}
                 </Title>
                 <Form
                     name="login"
