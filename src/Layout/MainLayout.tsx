@@ -155,7 +155,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                     background: 'transparent',
                     color: '#666'
                 }}>
-                    U-Inventory ©{new Date().getFullYear()} Created by Your Company
+                    U-Inventory ©{new Date().getFullYear()}
                 </Footer>
             </Layout>
         </Layout>

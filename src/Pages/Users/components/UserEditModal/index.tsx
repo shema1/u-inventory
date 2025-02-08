@@ -5,13 +5,13 @@ import { IUser, IUserInvite } from "../../../../apis/user/interfaces";
 import { useCreateInviteMutation, useUpdateUserMutation } from "../../../../apis/user/user";
 import { useGetRolesQuery } from "../../../../apis/roles/roles";
 
-interface InviteUserModalProps extends ModalProps {
+interface UserEditModalProps extends ModalProps {
     open: boolean;
     onCancel: () => void;
     selectedUser: IUser | null
 }
 
-const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUser }) => {
+const UserEditModal: FC<UserEditModalProps> = ({ open, onCancel, selectedUser }) => {
     const [form] = Form.useForm<IUserInvite>();
     const [createInvite, { isLoading: isLoadingCreateInvite, isSuccess: isSuccessInviteUser }] = useCreateInviteMutation();
     const [updateUserInvite, { isLoading: isLoadingUserInviteUpdate, isSuccess: isSuccessUserInviteUpdate }] = useUpdateUserMutation();
@@ -57,7 +57,7 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
                 email: selectedUser.email,
                 lastName: selectedUser.lastName,
                 firstName: selectedUser.firstName,
-                roleId: selectedUser?.role?.id || ''
+                roleId: selectedUser.role.id
             });
         }
     }, [selectedUser])
@@ -136,4 +136,4 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
     </>
 }
 
-export default InviteUserModal;
+export default UserEditModal;

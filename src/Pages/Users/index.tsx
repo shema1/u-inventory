@@ -1,77 +1,83 @@
-import { FC, useEffect } from "react";
-import { Table, TableProps } from "antd";
+import { FC, useState } from "react";
+import { Button, Space, Table, TableProps, Tag } from "antd";
 import MainLayout from "../../Layout/MainLayout";
-import { useLazyGetUsersByStatusQuery } from "../../apis/user/user";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import DeleteButton from "../../components/core/DeleteButton";
 import { IUser } from "../../apis/user/interfaces";
-
-
+import { useDeleteUserMutation, useGetUsersQuery } from "../../apis/user/user";
+import UserEditModal from "./components/UserEditModal";
+import InviteUserModal from "../IvitedUsers/components/InviteUserModal";
 
 const Users: FC = () => {
+    const { data: users, isLoading } = useGetUsersQuery();
+    const [deleteUser] = useDeleteUserMutation();
+    const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
-    const [getUsersByStatus, { data: usersData, isLoading }] = useLazyGetUsersByStatusQuery()
-
-    useEffect(() => {
-        getUsersByStatus({ status: 'active' });
-    }, [])
-
-    useEffect(() => {
-        console.log("usersData", usersData);
-    }, [usersData])
+    const onDeleteUser = async (id: string) => {
+        await deleteUser(id).unwrap();
+    };
 
     const columns: TableProps<IUser>['columns'] = [
         {
             title: "Ім'я",
             dataIndex: 'firstName',
             key: 'fullName',
-            render: (text: string, userData: IUser) => {
-                return <a>{text + " " + userData.lastName}</a>
-            },
+            render: (text: string, userData: IUser) => userData.lastName + " " + userData.firstName
         },
         {
             title: "Емейл",
             dataIndex: 'email',
             key: 'email',
-            render: (text: string) => <a>{text}</a>,
+            render: (text: string) => text
         },
-        // {
-        //     title: 'Tags',
-        //     key: 'tags',
-        //     dataIndex: 'tags',
-        //     render: (_: any, { tags }: any) => (
-        //         <>
-        //             {tags.map((tag: any) => {
-        //                 let color = tag.length > 5 ? 'geekblue' : 'green';
-        //                 if (tag === 'loser') {
-        //                     color = 'volcano';
-        //                 }
-        //                 return (
-        //                     <Tag color={color} key={tag}>
-        //                         {tag.toUpperCase()}
-        //                     </Tag>
-        //                 );
-        //             })}
-        //         </>
-        //     ),
-        // },
-        // {
-        //     title: 'Action',
-        //     key: 'action',
-        //     render: (_: any, record: any) => (
-        //         <Space size="middle">
-        //             <a>Заблокувати</a>
-        //             <a>Видалити</a>
-        //         </Space>
-        //     ),
-        // },
+        {
+            title: "Роль",
+            dataIndex: 'role',
+            key: 'role',
+            render: (role: { name: string }) => (
+                <Tag color="blue">
+                    {role?.name || 'Не призначено'}
+                </Tag>
+            )
+        },
+        {
+            title: 'Дії',
+            key: 'action',
+            width: 120,
+            render: (_: any, record: IUser) => (
+                <Space size="middle">
+                    <Button
+                        type="text"
+                        icon={<EditOutlined style={{ color: '#1890ff', fontSize: 20 }} />}
+                        onClick={() => setSelectedUser(record)}
+                    />
+
+                    <DeleteButton
+                        buttonProps={{
+                            type: "text",
+                            icon: <DeleteOutlined style={{ color: '#ff4d4f', fontSize: 20 }} />
+                        }}
+                        onDelete={() => record?.id && onDeleteUser(record?.id)}
+                        title="Видалити запрошення?"
+                        description="Ви впевнені що хочете видалити користувача?"
+                    />
+                </Space>
+            ),
+        },
     ];
 
-
-    return <>
+    return (
+        <>
         <MainLayout>
-            <Table<IUser> columns={columns} dataSource={usersData} loading={isLoading} />
-        </MainLayout>
-    </>
+            <Table<IUser> columns={columns} dataSource={users} loading={isLoading} />
+            </MainLayout>
+            <InviteUserModal
+                open={!!selectedUser}
+                onCancel={() => setSelectedUser(null)}
+                selectedUser={selectedUser}
+            />
+        </>
+    );
+};
 
-}
-
-export default Users
+export default Users;
