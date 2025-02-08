@@ -11,8 +11,8 @@ import { uk } from 'date-fns/locale';
 
 const IvitedUsers: FC = () => {
 
-    
-    const [getInvitedUsers, { data: invitedUsers, isLoading: invitedUsersIsLoading }]  = useLazyGetUsersByStatusQuery()
+
+    const [getInvitedUsers, { data: invitedUsers, isLoading: invitedUsersIsLoading }] = useLazyGetUsersByStatusQuery()
     // const [getInvitedUsers, { data: invitedUsers, isLoading: invitedUsersIsLoading }] = useLazyGetInvitedUsersQuery();
     const [deleteInvite, { isLoading: deleteInviteLoading }] = useDeleteUserMutation();
 
@@ -31,14 +31,14 @@ const IvitedUsers: FC = () => {
     }
 
     useEffect(() => {
-        getInvitedUsers({status: 'invited'});
+        getInvitedUsers({ status: 'invited' });
     }, [])
 
     useEffect(() => {
-        if(!inviteUserModalIsOpen){
+        if (!inviteUserModalIsOpen) {
             setSelectedUser(null)
         }
-    },[inviteUserModalIsOpen])
+    }, [inviteUserModalIsOpen])
 
     const columns: TableProps<IUser>['columns'] = [
         {
@@ -72,7 +72,7 @@ const IvitedUsers: FC = () => {
         {
             title: 'Дії',
             key: 'action',
-            width: 100,
+            width: 120,
             render: (_: any, record: IUser) => (
                 <Space size="middle">
                     <Button
@@ -97,6 +97,7 @@ const IvitedUsers: FC = () => {
 
     return <>
         <MainLayout>
+            <h2 style={{ margin: 0}}>Список запрошених користувачів</h2>
             <div style={{
                 display: 'flex',
                 justifyContent: 'end',
