@@ -32,7 +32,7 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
         try {
             const values = await form.validateFields();
             console.log("values", values);
-            await updateUserInvite({id: selectedUser?.id, ...values}).unwrap();
+            await updateUserInvite({ id: selectedUser?.id, ...values }).unwrap();
         } catch (error) {
             console.error("Помилка при оновленні користувача:", error);
         }
@@ -69,11 +69,11 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
 
     const onGenderChange = (value: string) => {
         console.log("value", value);
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
         console.log("roles", roles);
-      },[roles])
+    }, [roles])
 
     return <>
         <Modal
@@ -103,18 +103,6 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
                     <Input />
                 </Form.Item>
                 <Form.Item<IUserInvite>
-                    label="Прізвище"
-                    name='lastName'
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item<IUserInvite>
-                    label="Ім'я"
-                    name="firstName"
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item<IUserInvite>
                     label="Роль"
                     name="roleId"
                     rules={[{ required: true, message: 'Виберіть роль користувача' }]}
@@ -129,6 +117,20 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
                         }))}
                     />
                 </Form.Item>
+                <Form.Item<IUserInvite>
+                    label="Ім'я"
+                    name="firstName"
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item<IUserInvite>
+                    label="Прізвище"
+                    name='lastName'
+                >
+                    <Input />
+                </Form.Item>
+
+
             </Form>
         </Modal>
     </>

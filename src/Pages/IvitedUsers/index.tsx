@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from "react";
-import { Button, Space, Table, TableProps } from "antd";
+import { Button, Space, Table, TableProps, Tag } from "antd";
 import MainLayout from "../../Layout/MainLayout";
-import { EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { EditOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import InviteUserModal from "./components/InviteUserModal";
-import { blue, red } from '@ant-design/colors';
 import DeleteButton from "../../components/core/DeleteButton";
 import { format } from "date-fns";
 import { useDeleteUserMutation, useLazyGetUsersByStatusQuery } from "../../apis/user/user";
 import { IUser } from "../../apis/user/interfaces";
+import { uk } from 'date-fns/locale';
 
 const IvitedUsers: FC = () => {
 
@@ -54,27 +54,40 @@ const IvitedUsers: FC = () => {
             render: (text: string) => text
         },
         {
-            title: "Дата",
-            dataIndex: 'createdAt',
-            key: 'createdAt',
-            render: (text: string) => text ? format(new Date(text), 'yyyy/MM/dd HH:mm') : ''
+            title: "Роль",
+            dataIndex: 'role',
+            key: 'role',
+            render: (role: { name: string }) => (
+                <Tag color="blue">
+                    {role?.name || 'Не призначено'}
+                </Tag>
+            )
+        },
+        {
+            title: "Дата запрошення",
+            dataIndex: 'invitedAt',
+            key: 'invitedAt',
+            render: (text: string) => text ? format(new Date(text), 'dd MMM yyyy, HH:mm', { locale: uk }) : '-'
         },
         {
             title: 'Дії',
             key: 'action',
-            width: 150,
+            width: 100,
             render: (_: any, record: IUser) => (
                 <Space size="middle">
                     <Button
-                        type='text'
-                        icon={<EditOutlined
-                            style={{ color: blue[5], fontSize: 20 }} />}
+                        type="text"
+                        icon={<EditOutlined style={{ color: '#1890ff', fontSize: 20 }} />}
                         onClick={() => onSelectUser(record)}
                     />
                     <DeleteButton
+                        buttonProps={{
+                            type: "text",
+                            icon: <DeleteOutlined style={{ color: '#ff4d4f', fontSize: 20 }} />
+                        }}
                         onDelete={() => record?.id && onDeleteInvite(record?.id)}
                         title="Видалити запрошення?"
-                        description="ви впевнені що хочете видалити запрошеного користувача?"
+                        description="Ви впевнені що хочете видалити запрошеного користувача?"
                     />
                 </Space>
             ),

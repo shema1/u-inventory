@@ -4,6 +4,7 @@ import type { ColumnsType } from "antd/es/table";
 import MainLayout from "../../Layout/MainLayout";
 import { useGetUsersByStatusQuery, useUpdateUserMutation } from "../../apis/user/user";
 import { IUser } from "../../apis/user/interfaces";
+import { EditOutlined, CheckOutlined, StopOutlined } from '@ant-design/icons';
 
 const PendingUsers: FC = () => {
     const { data: pendingUsers, isLoading, refetch } = useGetUsersByStatusQuery({ status: 'pending' });
@@ -72,20 +73,19 @@ const PendingUsers: FC = () => {
         {
             title: 'Дії',
             key: 'action',
+            width: 120,
             render: (_, record) => (
                 <Space size="middle">
-                    <Button 
-                        type="primary" 
+                    <Button
+                        type="text"
+                        icon={<CheckOutlined style={{ color: '#52c41a', fontSize: 20 }} />}
                         onClick={() => handleApprove(record)}
-                    >
-                        Підтвердити
-                    </Button>
-                    <Button 
-                        danger 
+                    />
+                    <Button
+                        type="text"
+                        icon={<StopOutlined style={{ color: '#ff4d4f', fontSize: 20 }} />}
                         onClick={() => handleReject(record)}
-                    >
-                        Відхилити
-                    </Button>
+                    />
                 </Space>
             ),
         },

@@ -1,12 +1,7 @@
 import React, { FC, useState } from 'react';
 import {
-    FileOutlined,
-    LogoutOutlined,
-    UserOutlined,
     UsergroupAddOutlined,
-    UserSwitchOutlined,
     TeamOutlined,
-    SettingOutlined,
     AppstoreOutlined,
     SafetyCertificateOutlined,
     DatabaseOutlined,
@@ -47,7 +42,6 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useAppDispatch();
-    const profileInfo = useProfileInfo();
 
     const [collapsed, setCollapsed] = useState(false);
     const {
@@ -100,7 +94,15 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
 
     return <>
         <Layout style={{ minHeight: '100vh' }}>
-            <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+            <Sider 
+                collapsible 
+                collapsed={collapsed} 
+                onCollapse={(value) => setCollapsed(value)}
+                style={{
+                    boxShadow: '2px 0 8px rgba(0,0,0,0.15)',
+                    zIndex: 2
+                }}
+            >
                 <div style={{ 
                     height: '64px',
                     display: 'flex',
@@ -114,10 +116,11 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                     paddingBottom: '16px'
                 }}>
                     <AppstoreAddOutlined style={{ 
-                        fontSize: '24px',
-                        marginRight: collapsed ? '0' : '10px'
+                        fontSize: '28px',
+                        marginRight: collapsed ? '0' : '10px',
+                        color: '#1890ff'
                     }} />
-                    {!collapsed && <span>U-Inventory</span>}
+                    {!collapsed && <span style={{ fontWeight: 600 }}>U-Inventory</span>}
                 </div>
                 <Menu 
                     theme="dark" 
@@ -125,25 +128,34 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                     defaultOpenKeys={['users-submenu']}
                     mode="inline" 
                     items={items}
+                    style={{
+                        borderRight: 'none'
+                    }}
                 />
             </Sider>
             <Layout>
-               <HeaderLayoutComponent/>
-                <Content style={{ margin: '16px' }}>
+                <HeaderLayoutComponent/>
+                <Content style={{ margin: '16px', }}>
                     <div
                         style={{
-                            padding: 24,
+                            padding: '24px',
                             minHeight: 360,
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            height: '100%'
                         }}
                     >
                         {/* Bill is a cat. */}
                         {children}
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                <Footer style={{ 
+                    textAlign: 'center',
+                    background: 'transparent',
+                    color: '#666'
+                }}>
+                    U-Inventory ©{new Date().getFullYear()} Created by Your Company
                 </Footer>
             </Layout>
         </Layout>
