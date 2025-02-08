@@ -8,6 +8,7 @@ import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import Roles from "./Pages/Roles";
 import UserPendingPage from "./Pages/UserPendingPage";
+import UserBannedPage from "./Pages/UserBannedPage";
 
 
 
@@ -64,6 +65,14 @@ const AppRoutes: FC = () => {
         return (
             <Routes>
                 <Route path='*' element={<UserPendingPage />} />
+            </Routes>
+        )
+    }
+
+    if (authType === 'banned') {
+        return (
+            <Routes>
+                <Route path='*' element={<UserBannedPage />} />
             </Routes>
         )
     }

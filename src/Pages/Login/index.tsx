@@ -29,7 +29,11 @@ const Login: FC = () => {
             dispatch(setDataAfterLogin(loginData))
             if(loginData?.userInfo.status === 'pending'){
                 navigate('/pending')
-            }else{
+            }
+            else if(loginData?.userInfo.status === 'banned'){
+                navigate('/banned')
+            }
+            else{
                 navigate('/users')
             }
             
