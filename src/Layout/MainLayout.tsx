@@ -3,6 +3,15 @@ import {
     FileOutlined,
     LogoutOutlined,
     UserOutlined,
+    UsergroupAddOutlined,
+    UserSwitchOutlined,
+    TeamOutlined,
+    SettingOutlined,
+    AppstoreOutlined,
+    SafetyCertificateOutlined,
+    DatabaseOutlined,
+    AuditOutlined,
+    AppstoreAddOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Button, Layout, Menu, theme } from 'antd';
@@ -10,6 +19,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../store/hooks';
 import { useProfileInfo } from '../slices/auth/selectors';
 import { clearData } from '../slices/auth';
+import HeaderLayoutComponent from './components/HeaderLayout';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -28,14 +38,6 @@ function getItem(
         label,
     } as MenuItem;
 }
-
-
-
-const items: MenuItem[] = [
-    getItem('Користувачі', 'sub1', <UserOutlined />),
-    getItem('Інвентар', 'sub1', <UserOutlined />),
-];
-
 
 interface MainLayoutProps {
     children: React.ReactNode
@@ -56,35 +58,77 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
         dispatch(clearData());
     }
 
+    const items: MenuItem[] = [
+        {
+            key: 'users-submenu',
+            icon: <TeamOutlined />,
+            label: 'Користувачі',
+            children: [
+                {
+                    key: '/users',
+                    icon: <DatabaseOutlined />,
+                    label: 'Всі користувачі',
+                    onClick: () => navigate('/users')
+                },
+                {
+                    key: '/invitedusers',
+                    icon: <UsergroupAddOutlined />,
+                    label: 'Запрошені користувачі',
+                    onClick: () => navigate('/invitedusers')
+                },
+                {
+                    key: '/pending-users',
+                    icon: <SafetyCertificateOutlined />,
+                    label: 'Очікують підтвердження',
+                    onClick: () => navigate('/pending-users')
+                }
+            ]
+        },
+        {
+            key: '/inventory',
+            icon: <AppstoreOutlined />,
+            label: 'Інвентар',
+            onClick: () => navigate('/inventory')
+        },
+        {
+            key: '/roles',
+            icon: <AuditOutlined />,
+            label: 'Ролі',
+            onClick: () => navigate('/roles')
+        }
+    ];
+
     return <>
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                <div className="demo-logo-vertical" />
-                <Menu theme="dark" selectedKeys={[location.pathname]} mode="inline" >
-                    <Menu.Item key={'/users'} icon={<UserOutlined />} onClick={() => navigate('/users')}>
-                        Користувачі
-                    </Menu.Item>
-                    <Menu.Item key={'/invitedusers'} icon={<UserOutlined />} onClick={() => navigate('/invitedusers')}>
-                        Запрошені користувачі
-                    </Menu.Item>
-                        <Menu.Item key={'/inventory'} icon={<FileOutlined />} onClick={() => navigate('/inventory')}>
-                            Інвентар
-                        </Menu.Item>
-                    <Menu.Item key={'/pendingusers'} icon={<UserOutlined />} onClick={() => navigate('/pending-users')}>
-                        Запрошені користувачі
-                    </Menu.Item>    
-                    <Menu.Item key={'/roles'} icon={<UserOutlined />} onClick={() => navigate('/roles')}>
-                        Ролі
-                    </Menu.Item>
-                </Menu>
+                <div style={{ 
+                    height: '64px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontSize: collapsed ? '20px' : '18px',
+                    margin: '16px 0',
+                    transition: 'all 0.2s',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+                    paddingBottom: '16px'
+                }}>
+                    <AppstoreAddOutlined style={{ 
+                        fontSize: '24px',
+                        marginRight: collapsed ? '0' : '10px'
+                    }} />
+                    {!collapsed && <span>U-Inventory</span>}
+                </div>
+                <Menu 
+                    theme="dark" 
+                    selectedKeys={[location.pathname]} 
+                    defaultOpenKeys={['users-submenu']}
+                    mode="inline" 
+                    items={items}
+                />
             </Sider>
             <Layout>
-                <Header style={{ padding: '12px 25px', background: colorBgContainer, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} >
-                    <div style={{ marginRight: 20 }}>{profileInfo?.firstName + " " + profileInfo?.lastName}</div>
-                    <Button onClick={logout} type="primary" icon={<LogoutOutlined />} iconPosition='end'>
-                        Вийти
-                    </Button>
-                </Header>
+               <HeaderLayoutComponent/>
                 <Content style={{ margin: '16px' }}>
                     <div
                         style={{

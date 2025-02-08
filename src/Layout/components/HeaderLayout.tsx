@@ -21,12 +21,12 @@ const HeaderLayoutComponent: FC = () => {
 
     return (
         <>
-                <Header style={{ padding: '12px 25px', background: colorBgContainer, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} >
-                    <div style={{ marginRight: 20 }}>{profileInfo?.firstName + " " + profileInfo?.lastName}</div>
-                    <Button onClick={logout} type="primary" icon={<LogoutOutlined/>} iconPosition='end'>
-                        Вийти
-                    </Button>
-                </Header>
+            <Header style={{ padding: '12px 25px', height: 80, background: colorBgContainer, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} >
+                <div style={{ marginRight: 20 }}>{profileInfo?.firstName + " " + profileInfo?.lastName}</div>
+                <Button onClick={logout} type="primary" icon={<LogoutOutlined />} iconPosition='end'>
+                    Вийти
+                </Button>
+            </Header>
         </>
     )
 }

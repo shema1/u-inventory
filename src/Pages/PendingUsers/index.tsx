@@ -93,7 +93,7 @@ const PendingUsers: FC = () => {
 
     return (
         <MainLayout>
-            <div style={{ padding: '24px' }}>
+            <div style={{ padding: '24px' }} className="bg-[red]">
                 <h2 style={{ marginBottom: '20px' }}>Користувачі, що очікують підтвердження</h2>
                 <Table 
                     columns={columns} 
