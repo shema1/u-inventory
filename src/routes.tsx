@@ -7,6 +7,7 @@ import IvitedUsers from "./Pages/IvitedUsers";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import Roles from "./Pages/Roles";
+import UserPendingPage from "./Pages/UserPendingPage";
 
 
 
@@ -31,7 +32,6 @@ const AppRoutes: FC = () => {
     // }, [authType])
 
     if (authType === null) {
-        console.log("logout")
         return (
             <Routes>
 
@@ -42,6 +42,7 @@ const AppRoutes: FC = () => {
             </Routes>
         )
     }
+
     if (authType === 'active') {
         console.log("success")
 
@@ -56,6 +57,14 @@ const AppRoutes: FC = () => {
                 <Route path='*' element={<Inventory />} />
             </Routes>
 
+        )
+    }
+
+    if (authType === 'pending') {
+        return (
+            <Routes>
+                <Route path='*' element={<UserPendingPage />} />
+            </Routes>
         )
     }
     // if (authType === 'block') {

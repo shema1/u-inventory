@@ -1,14 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { IUserSignUp } from "../../apis/auth/interfaces";
 import { passswordMinLengthdRule, requireFielddRule, validEmaildRule } from "../../services/formRules";
 import { useSignUpMutation } from "../../apis/auth/auth";
+import { setDataAfterLogin } from "../../slices/auth";
+import { useAppDispatch } from "../../store/hooks";
 
 const SignUp: FC = () => {
 
   const [singUp, {data: singUpData, isLoading: singUpDataIsLoading}] = useSignUpMutation();
 
+  const dispatch = useAppDispatch();
   const onFinish = (values: IUserSignUp) => {
     console.log("Success:", values);
     singUp(values);
@@ -17,6 +21,12 @@ const SignUp: FC = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(()=> {
+    if(singUpData){
+      dispatch(setDataAfterLogin(singUpData))
+    }
+  },[singUpData])
 
   return <>
     <div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center', }}>
@@ -66,7 +76,7 @@ const SignUp: FC = () => {
             />
           </Form.Item>
           <Form.Item<IUserSignUp>
-            name="lasName"
+            name="lastName"
             rules={[requireFielddRule]}
           >
             <Input
@@ -115,6 +125,7 @@ const SignUp: FC = () => {
               htmlType="submit"
               className="w-full"
               size="large"
+              loading={singUpDataIsLoading}
             >
               Register
             </Button>

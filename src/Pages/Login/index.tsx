@@ -7,10 +7,12 @@ import { useLoginMutation } from "../../apis/auth/auth";
 import { passswordMinLengthdRule, requireFielddRule, validEmaildRule } from "../../services/formRules";
 import { useAppDispatch } from "../../store/hooks";
 import { setDataAfterLogin } from "../../slices/auth";
+import { useNavigate } from "react-router-dom";
 
 
 const Login: FC = () => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
     const [login, {data: loginData, isLoading: loginIsLoading}] = useLoginMutation()
 
 
@@ -25,6 +27,12 @@ const Login: FC = () => {
     useEffect(() => {
         if(loginData){
             dispatch(setDataAfterLogin(loginData))
+            if(loginData?.userInfo.status === 'pending'){
+                navigate('/pending')
+            }else{
+                navigate('/users')
+            }
+            
         }
     },[loginData])
 

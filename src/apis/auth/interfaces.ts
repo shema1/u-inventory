@@ -11,7 +11,7 @@ export interface IUserSignUp {
     password: string;
     confirmPassword: string;
     firstName: string;
-    lasName: string;
+    lastName: string;
 }
 
 
