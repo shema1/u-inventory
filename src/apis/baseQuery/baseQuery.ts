@@ -10,7 +10,7 @@ const getBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extraOp
         const accessToken = state.authActions.token
         console.log("accessToken", accessToken)
         const result = await fetchBaseQuery({
-            baseUrl: 'http://localhost:4000',
+            baseUrl: process.env.REACT_APP_NOTION_REDIRECT_URL,
             prepareHeaders: (headers) => {
                 if (accessToken) {
                     headers.set("Authorization", `Bearer ${accessToken}`);
