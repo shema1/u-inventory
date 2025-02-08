@@ -41,7 +41,9 @@ const Login: FC = () => {
         }
     },[loginData])
 
-    console.log("process.env", process.env.REACT_APP_BASE_URL)
+    console.log("process.env", process.env.REACT_APP_API_URL)
+    console.log("process.env2", process.env)
+
     return <>
         <div style={{ 
             display: 'flex', 
@@ -60,6 +62,8 @@ const Login: FC = () => {
                 <Title level={2} style={{ textAlign: 'center', marginBottom: 30, color: '#1a237e' }}>
                     Вхід в систему
                     test2:{process.env.REACT_APP_BASE_URL}
+                    test3:{process.env.REACT_APP_API_URL}
+
                 </Title>
                 <Form
                     name="login"
