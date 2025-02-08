@@ -34,6 +34,7 @@ const SignUp: FC = () => {
     useEffect(()=> {
       if(signUpData){
         dispatch(setDataAfterLogin(signUpData))
+        navigate('/users')
       }
     },[signUpData])
 

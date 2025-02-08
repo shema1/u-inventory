@@ -62,19 +62,6 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
         }
     }, [selectedUser])
 
-    const onFormValuesChange = (changedValues: any, allValues: any) => {
-        console.log("Changed values:", changedValues);
-        console.log("All form values:", allValues);
-    };
-
-    const onGenderChange = (value: string) => {
-        console.log("value", value);
-    };
-
-    useEffect(() => {
-        console.log("roles", roles);
-    }, [roles])
-
     return <>
         <Modal
             title="Запросити користувача"
@@ -92,7 +79,6 @@ const InviteUserModal: FC<InviteUserModalProps> = ({ open, onCancel, selectedUse
                 labelCol={{ span: 4 }}
                 autoComplete="off"
                 style={{ marginTop: 26 }}
-                onValuesChange={onFormValuesChange}
             >
                 <Form.Item<IUserInvite>
                     label="Емейл"

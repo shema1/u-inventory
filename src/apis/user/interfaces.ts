@@ -27,3 +27,7 @@ export interface IUserInvite {
     lastName: string;
     roleId: string;
 }
+
+export interface IUserConfirmPending {
+    roleId: string;
+}

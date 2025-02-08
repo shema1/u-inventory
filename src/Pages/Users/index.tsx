@@ -6,16 +6,20 @@ import DeleteButton from "../../components/core/DeleteButton";
 import { IUser } from "../../apis/user/interfaces";
 import { useDeleteUserMutation, useGetUsersQuery } from "../../apis/user/user";
 import InviteUserModal from "../IvitedUsers/components/InviteUserModal";
+import { useProfileInfo } from "../../slices/auth/selectors";
 
 const Users: FC = () => {
-    const { data: users, isLoading } = useGetUsersQuery();
-    const [deleteUser] = useDeleteUserMutation();
+    const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
     const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
     const [inviteUserModalIsOpen, setInviteUserModalIsOpen] = useState<boolean>(false);
-
+    const profileInfo = useProfileInfo();
+    const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
     const onDeleteUser = async (id: string) => {
-        await deleteUser(id).unwrap();
+        console.log("id", id)
+        deleteUser(id);
     };
+
+    const isLoading = isDeleting || isLoadingUsers;
 
     const columns: TableProps<IUser>['columns'] = [
         {
@@ -54,15 +58,18 @@ const Users: FC = () => {
                             setInviteUserModalIsOpen(true);
                         }}
                     />
-                    <DeleteButton
+                    {record?.id !== profileInfo?.id && <DeleteButton
                         buttonProps={{
                             type: "text",
                             icon: <DeleteOutlined style={{ color: '#ff4d4f', fontSize: 20 }} />
                         }}
-                        onDelete={() => record?.id && onDeleteUser(record?.id)}
+                        onDelete={() => {
+                            console.log('record', record)
+                            record?.id && onDeleteUser(record?.id)
+                        }}
                         title="Видалити користувача?"
                         description="Ви впевнені що хочете видалити користувача?"
-                    />
+                    />}
                 </Space>
             ),
         },
@@ -78,7 +85,7 @@ const Users: FC = () => {
             }}>
                 <Button type='primary' icon={<PlusOutlined />} onClick={() => setInviteUserModalIsOpen(true)}>Додати користувача</Button>
             </div>
-            <Table<IUser> columns={columns} dataSource={users} loading={isLoading} />
+            <Table<IUser>  columns={columns} dataSource={users} loading={isLoading} />
             <InviteUserModal
                 open={inviteUserModalIsOpen}
                 onCancel={() => setInviteUserModalIsOpen(false)}

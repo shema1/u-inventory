@@ -1,14 +1,17 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { Table, Tag, Button, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import MainLayout from "../../Layout/MainLayout";
 import { useGetUsersByStatusQuery, useUpdateUserMutation } from "../../apis/user/user";
 import { IUser } from "../../apis/user/interfaces";
-import { EditOutlined, CheckOutlined, StopOutlined } from '@ant-design/icons';
+import { CheckOutlined, StopOutlined } from '@ant-design/icons';
+import ConfirmPendingUser from "./components/ConfirmPendingUser/ConfirmPendingUser";
 
 const PendingUsers: FC = () => {
     const { data: pendingUsers, isLoading, refetch } = useGetUsersByStatusQuery({ status: 'pending' });
     const [updateUser, { isSuccess: isUpdateSuccess }] = useUpdateUserMutation();
+    const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
         if (isUpdateSuccess) {
@@ -16,15 +19,9 @@ const PendingUsers: FC = () => {
         }
     }, [isUpdateSuccess, refetch]);
 
-    const handleApprove = async (user: IUser) => {
-        try {
-            await updateUser({
-                id: user.id,
-                status: 'active'
-            }).unwrap();
-        } catch (error) {
-            console.error('Помилка при підтвердженні користувача:', error);
-        }
+    const handleApprove = (user: IUser) => {
+        setSelectedUser(user);
+        setIsModalVisible(true);
     };
 
     const handleReject = async (user: IUser) => {
@@ -37,6 +34,11 @@ const PendingUsers: FC = () => {
             console.error('Помилка при відхиленні користувача:', error);
         }
     };
+
+    const onCloseModal = () => {
+        setSelectedUser(null);
+        setIsModalVisible(false);
+    }
 
     const columns: ColumnsType<IUser> = [
         {
@@ -93,20 +95,24 @@ const PendingUsers: FC = () => {
 
     return (
         <MainLayout>
-            <div style={{ padding: '24px' }} className="bg-[red]">
-                <h2 style={{ marginBottom: '20px' }}>Користувачі, що очікують підтвердження</h2>
-                <Table 
-                    columns={columns} 
-                    dataSource={pendingUsers} 
-                    loading={isLoading}
-                    rowKey="id"
-                    pagination={{
-                        pageSize: 10,
-                        showSizeChanger: true,
-                        showTotal: (total) => `Всього ${total} користувачів`,
-                    }}
-                />
-            </div>
+            <h2 style={{ marginBottom: '20px' }}>Користувачі, що очікують підтвердження</h2>
+            <Table 
+                columns={columns} 
+                dataSource={pendingUsers} 
+                loading={isLoading}
+                rowKey="id"
+                pagination={{
+                    pageSize: 10,
+                    showSizeChanger: true,
+                    showTotal: (total) => `Всього ${total} користувачів`,
+                }}
+            />
+            <ConfirmPendingUser
+                visible={isModalVisible}
+                onOk={onCloseModal}
+                selectedUser={selectedUser}
+                onCancel={onCloseModal}
+            />
         </MainLayout>
     );
 };
