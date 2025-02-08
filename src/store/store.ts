@@ -5,7 +5,6 @@ import rootReducer from "./reducers";
 import { user } from "../apis/user/user";
 import { persistStore } from 'redux-persist';
 import { items } from "../apis/items/user";
-import { inviteUser } from "../apis/inviteUser/inviteUser";
 import { auth } from "../apis/auth/auth";
 import { roles } from "../apis/roles/roles";
 
@@ -17,7 +16,6 @@ export const store = configureStore({
     .concat(
       user.middleware,
       items.middleware,
-      inviteUser.middleware,
       auth.middleware,
       roles.middleware
     )

@@ -1,9 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { IUser, IUserQueryParams } from "./interfaces";
+import { IUser, IUserInvite, IUserQueryParams } from "./interfaces";
 import getBaseQuery from "../baseQuery/baseQuery";
 import { getQueryString } from "../../services/getQueryString";
-import { IUserInvite } from "../inviteUser/interfaces";
-
 export const user = createApi({
     baseQuery: getBaseQuery,
     reducerPath: "user",
